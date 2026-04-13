@@ -1,0 +1,102 @@
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="assets/images/logo.png" alt="دار البدوي" class="footer-logo-img">
+            <div>
+              <div class="footer-logo-en">Dar El-Badawi</div>
+              <div class="footer-logo-ar">دار البدوي</div>
+            </div>
+          </div>
+          <p class="footer-desc">{{ t('brandDesc') }}</p>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/bedouin.dar/" target="_blank" class="social-btn instagram" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/@AFIFYWASHERE" target="_blank" class="social-btn youtube" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://wa.me/201234567890" target="_blank" class="social-btn whatsapp" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.google.com/maps/place/Bedouin+Hostel/" target="_blank" class="social-btn maps" aria-label="Google Maps">
+              <i class="fas fa-map-marker-alt"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">{{ t('explore') }}</h4>
+          <ul class="footer-links">
+            <li><a routerLink="/">{{ t('home') }}</a></li>
+            <li><a href="/#events">{{ t('events') }}</a></li>
+            <li><a routerLink="/services">{{ t('stay') }}</a></li>
+            <li><a routerLink="/gallery">{{ t('gallery') }}</a></li>
+            <li><a routerLink="/blog">{{ t('stories') }}</a></li>
+            <li><a routerLink="/about">{{ t('about') }}</a></li>
+          </ul>
+        </div>
+
+        <!-- Experience -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">{{ t('experience') }}</h4>
+          <ul class="footer-links">
+            <li><a href="/#stay">{{ t('dorms') }}</a></li>
+            <li><a href="/#stay">{{ t('private') }}</a></li>
+            <li><a href="/#stay">{{ t('rooftop') }}</a></li>
+            <li><a href="/#story">{{ t('volunteer') }}</a></li>
+            <li><a href="/#map">{{ t('secrets') }}</a></li>
+            <li><a href="/#playlist">{{ t('playlist') }}</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">{{ t('contact') }}</h4>
+          <div class="footer-contact">
+            <div class="contact-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ t('address') }}</span>
+            </div>
+            <div class="contact-row">
+              <i class="fab fa-whatsapp"></i>
+              <a href="https://wa.me/201234567890">+20 123 456 7890</a>
+            </div>
+            <div class="contact-row">
+              <i class="fab fa-instagram"></i>
+              <a href="https://www.instagram.com/bedouin.dar/" target="_blank">&#64;bedouin.dar</a>
+            </div>
+          </div>
+
+          <!-- WhatsApp CTA -->
+          <a href="https://wa.me/201234567890?text=I'd like to book at Dar El-Badawi!"
+             target="_blank"
+             class="footer-wa-btn">
+            <i class="fab fa-whatsapp"></i>
+            {{ t('bookWa') }}
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="footer-bottom-inner">
+        <p>&copy; {{ currentYear }} Dar El-Badawi · دار البدوي. {{ t('copy') }}</p>
+        <div class="footer-bottom-links">
+          <a routerLink="/contact">{{ t('privacy') }}</a>
+          <span>·</span>
+          <a routerLink="/contact">{{ t('terms') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

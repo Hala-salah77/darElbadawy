@@ -1,0 +1,66 @@
+<div class="page-wrapper">
+  <app-header></app-header>
+
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <div class="hero-bg" style="background-image: url('assets/images/cover2.jpg');"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="page-title">{{ t('heroTitle') }}</h1>
+        <p class="page-sub">{{ t('heroSub') }}</p>
+      </div>
+    </section>
+
+    <!-- Story Content Section -->
+    <section class="story-section section">
+      <div class="container">
+        <div class="story-grid">
+
+          <div class="story-text">
+            <span class="section-label">{{ t('storyLabel') }}</span>
+            <h2 class="section-title">{{ t('storyTitle') }}</h2>
+            <p>{{ t('storyP1') }}</p>
+            <p>{{ t('storyP2') }}</p>
+          </div>
+
+          <div class="story-image">
+            <div class="image-wrapper">
+              <video style="max-height:500px;width: 100%;object-fit: cover;" autoplay loop muted playsinline
+                src="https://res.cloudinary.com/dkbjna5nf/video/upload/v1775453990/WhatsApp_Video_2026-01-08_at_1.31.36_PM_gjktpi.mp4"></video>
+            </div>
+            <div class="image-decor"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section (Dark/Amber vibe) -->
+    <section class="mission-section">
+      <div class="container">
+        <div class="mission-inner">
+          <span class="section-label amber">{{ t('missionLabel') }}</span>
+          <h2 class="section-title white">{{ t('missionTitle') }}</h2>
+          <p class="mission-desc">{{ t('missionText') }}</p>
+          <div class="mission-stats">
+            <div class="stat">
+              <h3>5+</h3>
+              <span>Years of Stories</span>
+            </div>
+            <div class="stat">
+              <h3>2000+</h3>
+              <span>Happy Guests</span>
+            </div>
+            <div class="stat">
+              <h3>100%</h3>
+              <span>Bedouin Vibe</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+</div>

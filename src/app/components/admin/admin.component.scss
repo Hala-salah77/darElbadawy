@@ -1,0 +1,427 @@
+// Variables
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 72px;
+$topbar-height: 64px;
+$primary: #667eea;
+$primary-dark: #5a6fd8;
+$sidebar-bg: #1a2035;
+$sidebar-hover: rgba(255,255,255,0.07);
+$sidebar-active: rgba(102, 126, 234, 0.18);
+$text-muted: #8a94b8;
+$transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f0f2f8;
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────
+.admin-sidebar {
+  width: $sidebar-width;
+  background: $sidebar-bg;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1000;
+  transition: $transition;
+  border-right: 1px solid rgba(255,255,255,0.04);
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .brand-text,
+    .nav-label,
+    .nav-section-label,
+    .user-info,
+    .logout-btn span,
+    .nav-divider + .nav-section-label {
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-brand {
+      justify-content: center;
+      padding: 1.25rem 0;
+    }
+
+    .user-card {
+      justify-content: center;
+    }
+
+    .nav-section-label {
+      display: none;
+    }
+
+    .nav-divider {
+      margin: 0.5rem 1rem;
+    }
+  }
+}
+
+// Brand
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.25rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  min-height: $topbar-height;
+  transition: $transition;
+
+  .brand-logo {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, $primary 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+
+    i {
+      font-size: 1.1rem;
+      color: white;
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    transition: $transition;
+    white-space: nowrap;
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .brand-role {
+      font-size: 0.72rem;
+      color: $primary;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+  }
+}
+
+// Nav
+.admin-nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+}
+
+.nav-section-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-muted;
+  padding: 0.75rem 1.25rem 0.4rem;
+  white-space: nowrap;
+  transition: $transition;
+}
+
+.nav-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 0.75rem 1.25rem;
+  transition: $transition;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    margin: 0.15rem 0.75rem;
+    color: $text-muted;
+    text-decoration: none;
+    transition: $transition;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+
+    .nav-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: $transition;
+      border-radius: 10px;
+    }
+
+    .nav-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: $transition;
+      padding-right: 1rem;
+    }
+
+    &:hover {
+      background: $sidebar-hover;
+      color: white;
+    }
+
+    &.active {
+      background: $sidebar-active;
+      color: $primary;
+
+      .nav-icon {
+        color: $primary;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 70%;
+        background: $primary;
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+}
+
+// Footer
+.sidebar-footer {
+  padding: 1rem 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  margin-bottom: 0.75rem;
+  transition: $transition;
+
+  .user-avatar {
+    flex-shrink: 0;
+    i {
+      font-size: 1.75rem;
+      color: $primary;
+    }
+  }
+
+  .user-info {
+    overflow: hidden;
+    transition: $transition;
+    white-space: nowrap;
+
+    .user-name {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+    }
+    .user-email {
+      display: block;
+      font-size: 0.72rem;
+      color: $text-muted;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.logout-btn {
+  width: 100%;
+  background: rgba(231, 76, 60, 0.12);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: $transition;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(231, 76, 60, 0.22);
+    border-color: rgba(231, 76, 60, 0.4);
+  }
+}
+
+
+// ─── MAIN ─────────────────────────────────────────────────
+.admin-main {
+  flex: 1;
+  margin-left: $sidebar-width;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: $transition;
+}
+
+.admin-layout.sidebar-collapsed .admin-main {
+  margin-left: $sidebar-collapsed-width;
+}
+
+// ─── TOPBAR ───────────────────────────────────────────────
+.admin-topbar {
+  height: $topbar-height;
+  background: white;
+  border-bottom: 1px solid #e8ecf4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f0f2f8;
+    color: #333;
+  }
+}
+
+.topbar-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $primary;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid rgba(102,126,234,0.3);
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(102,126,234,0.08);
+  }
+
+  @media (max-width: 480px) { display: none; }
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  font-size: 0.875rem;
+
+  i {
+    font-size: 1.25rem;
+    color: $primary;
+  }
+
+  @media (max-width: 480px) {
+    span { display: none; }
+  }
+}
+
+// ─── CONTENT ──────────────────────────────────────────────
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+// ─── MOBILE ───────────────────────────────────────────────
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: $sidebar-collapsed-width;
+
+    &:not(.collapsed) {
+      width: $sidebar-width;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+    }
+  }
+
+  .admin-main {
+    margin-left: $sidebar-collapsed-width;
+  }
+
+  .admin-layout.sidebar-collapsed .admin-main {
+    margin-left: $sidebar-collapsed-width;
+  }
+
+  .admin-content {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-sidebar:not(.collapsed) {
+    position: fixed;
+    z-index: 1001;
+    width: 260px;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.4);
+  }
+
+  .admin-main {
+    margin-left: $sidebar-collapsed-width;
+  }
+}

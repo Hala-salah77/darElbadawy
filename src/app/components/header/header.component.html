@@ -1,0 +1,128 @@
+<header class="header" [class.scrolled]="isScrolled">
+  <nav class="navbar">
+    <div class="container">
+      <!-- Logo -->
+      <div class="nav-logo">
+        <a routerLink="/" class="logo-link">
+          <img src="assets/images/logo.png" alt="دار البدوي" class="logo-img">
+          <div class="logo-text-group">
+            <span class="logo-en">Dar El-Badawi</span>
+            <span class="logo-ar">دار البدوي</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">
+            {{ lang === 'en' ? 'Home' : 'الرئيسية' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/#events" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'Events' : 'الفعاليات' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/services" routerLinkActive="active" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'Stay' : 'الإقامة' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/gallery" routerLinkActive="active" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'Gallery' : 'المعرض' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/blog" routerLinkActive="active" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'Stories' : 'الحكايات' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/about" routerLinkActive="active" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'About' : 'عنا' }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/contact" routerLinkActive="active" class="nav-link" (click)="closeMenu()">
+            {{ lang === 'en' ? 'Contact' : 'تواصل' }}
+          </a>
+        </li>
+      </ul>
+
+      <!-- Language Toggle + Book CTA (Desktop) -->
+      <div class="nav-actions">
+        <button class="lang-toggle" (click)="toggleLang()"
+          [attr.aria-label]="lang === 'en' ? 'Switch to Arabic' : 'التحويل للإنجليزية'">
+          <span class="lang-flag">{{ lang === 'en' ? '🇪🇬' : '🇬🇧' }}</span>
+          <span class="lang-label">{{ lang === 'en' ? 'عربي' : 'EN' }}</span>
+        </button>
+
+        <a href="https://wa.me/201234567890?text=I'd%20like%20to%20book%20a%20stay%20at%20Dar%20El-Badawi"
+          target="_blank" class="btn-book">
+          <i class="fab fa-whatsapp"></i>
+          {{ lang === 'en' ? 'Book Now' : 'احجز الآن' }}
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button class="mobile-menu-btn" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle menu"
+        id="mobile-menu-toggle">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav" [class.open]="isMenuOpen">
+    <!-- Language toggle in mobile -->
+    <div class="mobile-lang-row">
+      <button class="lang-toggle-mobile" (click)="toggleLang()">
+        <span class="lang-flag">{{ lang === 'en' ? '🇪🇬' : '🇬🇧' }}</span>
+        <span>{{ lang === 'en' ? 'التحويل للعربي' : 'Switch to English' }}</span>
+      </button>
+    </div>
+
+    <ul class="mobile-nav-list">
+      <li><a routerLink="/" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-home"></i>
+          <span>{{ lang === 'en' ? 'Home' : 'الرئيسية' }}</span>
+        </a></li>
+      <li><a href="/#events" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-calendar-alt"></i>
+          <span>{{ lang === 'en' ? 'Events' : 'الفعاليات' }}</span>
+        </a></li>
+      <li><a routerLink="/services" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-bed"></i>
+          <span>{{ lang === 'en' ? 'Stay' : 'الإقامة' }}</span>
+        </a></li>
+      <li><a routerLink="/gallery" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-images"></i>
+          <span>{{ lang === 'en' ? 'Gallery' : 'المعرض' }}</span>
+        </a></li>
+      <li><a routerLink="/blog" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-book-open"></i>
+          <span>{{ lang === 'en' ? 'Stories' : 'الحكايات' }}</span>
+        </a></li>
+      <li><a routerLink="/about" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-users"></i>
+          <span>{{ lang === 'en' ? 'About' : 'عنا' }}</span>
+        </a></li>
+      <li><a routerLink="/contact" (click)="closeMenu()" class="mobile-nav-link">
+          <i class="fas fa-envelope"></i>
+          <span>{{ lang === 'en' ? 'Contact' : 'تواصل' }}</span>
+        </a></li>
+      <li class="mobile-cta">
+        <a href="https://wa.me/201234567890" target="_blank" class="btn btn-amber btn-lg" (click)="closeMenu()">
+          <i class="fab fa-whatsapp"></i>
+          {{ lang === 'en' ? 'Book Now' : 'احجز الآن' }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- Backdrop -->
+  <div class="nav-backdrop" [class.visible]="isMenuOpen" (click)="closeMenu()"></div>
+</header>

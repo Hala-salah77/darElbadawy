@@ -1,0 +1,205 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--midnight) 0%, var(--charcoal) 100%);
+  position: relative;
+  overflow: hidden;
+  padding: var(--spacing-4);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('../../../assets/images/cover.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+  }
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 2;
+  animation: slideInUp 0.6s ease;
+}
+
+.login-card {
+  background: white;
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-10);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--gradient-amber);
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-black);
+    color: var(--midnight);
+    margin-bottom: var(--spacing-2);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+
+  label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--midnight);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  
+  .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1rem;
+    left: var(--spacing-4);
+    
+    [dir="rtl"] & {
+      left: auto;
+      right: var(--spacing-4);
+    }
+  }
+
+  .form-input {
+    width: 100%;
+    padding: var(--spacing-3) var(--spacing-4);
+    padding-left: calc(var(--spacing-8) + var(--spacing-2));
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-base);
+    transition: var(--transition-fast);
+    background: var(--warm-white);
+    
+    [dir="rtl"] & {
+      padding-left: var(--spacing-4);
+      padding-right: calc(var(--spacing-8) + var(--spacing-2));
+      font-family: var(--font-arabic);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(232,160,32,0.1);
+      
+      & + .icon { color: var(--amber); }
+    }
+
+    &.error {
+      border-color: #ef4444;
+      &:focus { box-shadow: 0 0 0 4px rgba(239,68,68,0.1); }
+    }
+  }
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: var(--text-xs);
+  min-height: 18px;
+  
+  [dir="rtl"] & { font-family: var(--font-arabic); }
+}
+
+.global-error {
+  background: rgba(239,68,68,0.1);
+  color: #b91c1c;
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  [dir="rtl"] & { font-family: var(--font-arabic); }
+}
+
+.login-btn {
+  margin-top: var(--spacing-2);
+  justify-content: center;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--text-base);
+  border-radius: var(--radius-lg);
+  
+  [dir="rtl"] & { font-family: var(--font-arabic); }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+}
+
+.login-footer {
+  margin-top: var(--spacing-8);
+  text-align: center;
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    transition: var(--transition-fast);
+    
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+      flex-direction: row-reverse;
+      i { transform: rotate(180deg); }
+    }
+
+    &:hover {
+      color: var(--amber);
+    }
+  }
+}

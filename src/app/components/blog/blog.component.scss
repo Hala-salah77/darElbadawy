@@ -1,0 +1,211 @@
+.page-wrapper {
+  background: var(--warm-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1;
+}
+
+/* Page Hero Shared Style */
+.page-hero {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15,31,61,0.8) 0%, rgba(28,28,46,0.6) 100%);
+    z-index: 2;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    color: white;
+    padding-top: var(--spacing-16);
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-black);
+    margin-bottom: var(--spacing-2);
+    
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+    }
+  }
+  .page-sub {
+    font-size: var(--text-lg);
+    color: var(--amber);
+    
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+      font-size: var(--text-base);
+    }
+  }
+}
+
+/* Loading & Empty state */
+.loading-state, .empty-state {
+  text-align: center;
+  padding: var(--spacing-16) 0;
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  
+  i {
+    font-size: 2rem;
+    color: var(--amber);
+    margin-bottom: var(--spacing-4);
+  }
+  
+  [dir="rtl"] & {
+    font-family: var(--font-arabic);
+  }
+}
+
+/* Blog Grid inherited from Home Component style */
+.blog-section {
+  padding: var(--spacing-20) 0;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
+}
+
+.blog-card {
+  background: white;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(212,169,106,0.1);
+  transition: var(--transition-base);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .blog-img {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .blog-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(15,31,61,0.4) 0%, transparent 60%);
+    }
+  }
+
+  &:hover .blog-img img { transform: scale(1.07); }
+
+  .blog-body {
+    padding: var(--spacing-6);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-meta {
+    display: flex;
+    gap: var(--spacing-4);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-3);
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+
+    i { color: var(--amber); font-size: 0.7rem; }
+  }
+
+  .blog-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    margin-bottom: var(--spacing-3);
+
+    a {
+      color: var(--midnight);
+      text-decoration: none;
+      transition: var(--transition-fast);
+
+      &:hover { color: var(--amber); }
+    }
+    
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+      direction: rtl;
+      text-align: right;
+    }
+  }
+
+  .blog-excerpt {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    flex: 1;
+    margin-bottom: var(--spacing-4);
+    
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+      direction: rtl;
+      text-align: right;
+    }
+  }
+
+  .blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--amber);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    transition: var(--transition-fast);
+
+    i { transition: var(--transition-fast); }
+
+    [dir="rtl"] & {
+      font-family: var(--font-arabic);
+      direction: rtl;
+      text-align: right;
+      i { transform: rotate(180deg); } /* reverse arrow for RTL */
+    }
+
+    &:hover {
+      gap: var(--spacing-3);
+      i { transform: translateX(4px); }
+      [dir="rtl"] &:hover i {
+        transform: rotate(180deg) translateX(-4px); /* handle RTL hover correctly */
+      }
+    }
+  }
+}

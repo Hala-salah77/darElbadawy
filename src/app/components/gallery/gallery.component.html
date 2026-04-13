@@ -1,0 +1,61 @@
+<div class="page-wrapper" [attr.dir]="lang === 'ar' ? 'rtl' : 'ltr'">
+  <app-header></app-header>
+  
+  <main class="main-content">
+    <section class="page-hero">
+      <div class="hero-bg" style="background-image: url('assets/images/cover2.jpg');"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="page-title">{{ t('heroTitle') }}</h1>
+        <p class="page-sub">{{ t('heroSub') }}</p>
+      </div>
+    </section>
+
+    <section class="gallery-section section">
+      <div class="container">
+        
+        <div class="loading-state" *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>{{ t('loading') }}</p>
+        </div>
+
+        <div class="gallery-grid" *ngIf="!isLoading">
+          <div class="gallery-item" *ngFor="let image of images" (click)="openModal(image)">
+            <img [src]="image.imgUrl" [alt]="image.name || 'Gallery image'" loading="lazy" (error)="onImageError($event)">
+            <div class="gallery-overlay">
+              <i class="fas fa-search-plus"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Image Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="onModalClick($event)">
+    <div class="modal-content">
+      <button class="modal-close" (click)="closeModal()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <button class="modal-nav modal-nav-prev" (click)="ts.current === 'ar' ? nextImage() : previousImage()" 
+              [style.visibility]="(ts.current === 'ar' ? currentImageIndex === images.length - 1 : currentImageIndex === 0) ? 'hidden' : 'visible'">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <button class="modal-nav modal-nav-next" (click)="ts.current === 'ar' ? previousImage() : nextImage()" 
+              [style.visibility]="(ts.current === 'ar' ? currentImageIndex === 0 : currentImageIndex === images.length - 1) ? 'hidden' : 'visible'">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      
+      <div class="modal-image-container" *ngIf="currentImage">
+        <img [src]="currentImage.imgUrl" [alt]="currentImage.name || 'Gallery image'" class="modal-image">
+        <div class="modal-info">
+          <p>{{ currentImageIndex + 1 }} / {{ images.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

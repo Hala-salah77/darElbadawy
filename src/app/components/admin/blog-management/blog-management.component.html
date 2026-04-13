@@ -1,0 +1,179 @@
+<div class="blog-management">
+  <div class="page-header">
+    <h1>Blog Management</h1>
+    <button class="btn btn-primary" (click)="toggleForm()">
+      <i class="fas fa-plus"></i>
+      {{ showForm ? 'Cancel' : 'Add New Post' }}
+    </button>
+  </div>
+
+  <!-- Blog Form -->
+  <div class="blog-form-container" *ngIf="showForm">
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="blog-form">
+      <div class="form-header">
+        <h2>{{ isEditing ? 'Edit Blog Post' : 'Create New Blog Post' }}</h2>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input type="text" id="title" formControlName="title" class="form-input" placeholder="Enter blog post title">
+          <div class="error-message" *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched">
+            <span *ngIf="blogForm.get('title')?.errors?.['required']">Title is required</span>
+            <span *ngIf="blogForm.get('title')?.errors?.['minlength']">Title must be at least 5 characters</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author *</label>
+          <input type="text" id="author" formControlName="author" class="form-input" placeholder="Enter author name">
+          <div class="error-message" *ngIf="blogForm.get('author')?.invalid && blogForm.get('author')?.touched">
+            Author is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="excerpt">Excerpt *</label>
+        <textarea id="excerpt" formControlName="excerpt" class="form-textarea" rows="3" placeholder="Brief description of the blog post"></textarea>
+        <div class="error-message" *ngIf="blogForm.get('excerpt')?.invalid && blogForm.get('excerpt')?.touched">
+          <span *ngIf="blogForm.get('excerpt')?.errors?.['required']">Excerpt is required</span>
+          <span *ngIf="blogForm.get('excerpt')?.errors?.['minlength']">Excerpt must be at least 20 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="content">Content *</label>
+        <textarea id="content" formControlName="content" class="form-textarea" rows="10" placeholder="Write your blog post content here..."></textarea>
+        <div class="error-message" *ngIf="blogForm.get('content')?.invalid && blogForm.get('content')?.touched">
+          <span *ngIf="blogForm.get('content')?.errors?.['required']">Content is required</span>
+          <span *ngIf="blogForm.get('content')?.errors?.['minlength']">Content must be at least 50 characters</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tags">Tags *</label>
+          <input type="text" id="tags" formControlName="tags" class="form-input" placeholder="Enter tags separated by commas">
+          <small class="form-help">Separate multiple tags with commas (e.g., travel, dahab, adventure)</small>
+          <div class="error-message" *ngIf="blogForm.get('tags')?.invalid && blogForm.get('tags')?.touched">
+            Tags are required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isPublished" class="form-checkbox">
+            <span class="checkmark"></span>
+            Publish immediately
+          </label>
+        </div>
+      </div>
+
+      <!-- Image Upload Section -->
+      <div class="form-group">
+        <label>Featured Image</label>
+        <div class="image-upload-section">
+          <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Preview" class="preview-image">
+            <button type="button" class="remove-image" (click)="imagePreview = null; selectedImage = null">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <div class="image-upload-controls" *ngIf="!imagePreview">
+            <input type="file" id="imageInput" (change)="onImageSelected($event)" accept="image/*" class="file-input">
+            <label for="imageInput" class="file-input-label">
+              <i class="fas fa-upload"></i>
+              Choose Image
+            </label>
+          </div>
+          
+          <button type="button" class="btn btn-secondary" (click)="uploadImage()" *ngIf="selectedImage && !imagePreview">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Upload Image
+          </button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="resetForm()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="blogForm.invalid || isLoading">
+          <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+          {{ isEditing ? 'Update Post' : 'Create Post' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Blog Posts List -->
+  <div class="blog-posts-section">
+    <div class="section-header">
+      <h2>All Blog Posts</h2>
+      <div class="posts-count">{{ blogPosts.length }} posts</div>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading blog posts...</p>
+    </div>
+
+    <div class="blog-posts-grid" *ngIf="!isLoading && blogPosts.length > 0">
+      <div class="blog-post-card" *ngFor="let post of blogPosts">
+        <div class="post-image" *ngIf="post.featuredImage">
+          <img [src]="post.featuredImage" [alt]="post.title">
+        </div>
+        
+        <div class="post-content">
+          <div class="post-header">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <div class="post-status">
+              <span class="status-badge" [class.published]="post.isPublished" [class.draft]="!post.isPublished">
+                {{ post.isPublished ? 'Published' : 'Draft' }}
+              </span>
+            </div>
+          </div>
+          
+          <p class="post-excerpt">{{ post.excerpt }}</p>
+          
+          <div class="post-meta">
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span>{{ post.author }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <span>{{ post.publishedAt | date:'MMM d, y' }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-tags"></i>
+              <span>{{ post.tags.join(', ') }}</span>
+            </div>
+          </div>
+          
+          <div class="post-actions">
+            <button class="btn btn-sm btn-outline" (click)="editBlogPost(post)">
+              <i class="fas fa-edit"></i>
+              Edit
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteBlogPost(post.id!)">
+              <i class="fas fa-trash"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && blogPosts.length === 0">
+      <i class="fas fa-blog"></i>
+      <h3>No blog posts yet</h3>
+      <p>Create your first blog post to get started.</p>
+      <button class="btn btn-primary" (click)="toggleForm()">
+        <i class="fas fa-plus"></i>
+        Create First Post
+      </button>
+    </div>
+  </div>
+</div>
+

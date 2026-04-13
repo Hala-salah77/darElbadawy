@@ -1,0 +1,61 @@
+<div class="page-wrapper">
+  <app-header></app-header>
+  
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <div class="hero-bg" style="background-image: url('assets/images/cover4.jpg');"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="page-title">{{ t('heroTitle') }}</h1>
+        <p class="page-sub">{{ t('heroSub') }}</p>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="rooms-section section">
+      <div class="container">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="state-container">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>{{ t('loading') }}</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && services.length === 0" class="state-container">
+          <p>{{ t('noRooms') }}</p>
+        </div>
+
+        <div class="rooms-grid" *ngIf="!isLoading && services.length > 0">
+          <div class="room-card" *ngFor="let service of services">
+            <div class="room-img" *ngIf="service.image">
+              <img [src]="service.image" [alt]="service.title" loading="lazy">
+            </div>
+            <div class="room-body">
+              <h3 class="room-title">{{ service.title }}</h3>
+              <p class="room-desc">{{ service.description }}</p>
+              
+              <div class="room-footer">
+                <div class="room-price" *ngIf="service.price">
+                  <span class="price-label">{{ t('from') }}</span>
+                  <span class="price-value">{{ service.currency }}{{ service.price }}</span>
+                  <span class="price-duration" *ngIf="service.duration">{{ t('night') }}</span>
+                </div>
+                
+                <a href="https://wa.me/201234567890?text=I'd like to book: {{ service.title }}"
+                   target="_blank" class="btn btn-outline-amber">
+                  <i class="fab fa-whatsapp"></i>
+                  {{ t('bookNow') }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  
+  <app-footer></app-footer>
+</div>

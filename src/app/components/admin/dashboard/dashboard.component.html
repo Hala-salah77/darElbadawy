@@ -1,0 +1,252 @@
+<div class="dashboard">
+
+  <!-- Welcome Header -->
+  <div class="dashboard-header">
+    <div class="header-text">
+      <h1>Welcome back 👋</h1>
+      <p>Here's what's happening with your hostel today.</p>
+    </div>
+    <div class="header-date">
+      <i class="fas fa-calendar-alt"></i>
+      <span>{{ today | date: 'EEEE, MMMM d, y' }}</span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-screen" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <i class="fas fa-circle-notch fa-spin"></i>
+    </div>
+    <p>Loading your dashboard...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ── Alerts ─────────────────────────────── -->
+    <div class="alerts-row" *ngIf="draftPosts > 0 || inactiveServices > 0">
+      <div class="alert-banner amber" *ngIf="draftPosts > 0">
+        <div class="alert-icon"><i class="fas fa-pencil-alt"></i></div>
+        <div class="alert-text">
+          <strong>{{ draftPosts }} unpublished {{ draftPosts === 1 ? 'post' : 'posts' }}</strong>
+          <span>Waiting to be published.</span>
+        </div>
+        <a routerLink="/admin/blog" class="alert-action">Review</a>
+      </div>
+
+      <div class="alert-banner red" *ngIf="inactiveServices > 0">
+        <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <div class="alert-text">
+          <strong>{{ inactiveServices }} inactive {{ inactiveServices === 1 ? 'service' : 'services' }}</strong>
+          <span>Hidden from guests.</span>
+        </div>
+        <a routerLink="/admin/services" class="alert-action">Manage</a>
+      </div>
+    </div>
+
+    <!-- ── Stats Cards ────────────────────────── -->
+    <div class="stats-grid">
+      <div class="stat-card blue" routerLink="/admin/blog">
+        <div class="stat-icon">
+          <i class="fas fa-feather-alt"></i>
+        </div>
+        <div class="stat-body">
+          <div class="stat-number">{{ stats.totalBlogPosts }}</div>
+          <div class="stat-label">Blog Posts</div>
+          <div class="stat-sub">
+            <i class="fas fa-check-circle"></i>
+            {{ stats.publishedPosts }} published
+            <span class="stat-sub-sep" *ngIf="draftPosts > 0">·</span>
+            <span class="draft-hint" *ngIf="draftPosts > 0">{{ draftPosts }} draft</span>
+          </div>
+        </div>
+        <div class="stat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="stat-card purple" routerLink="/admin/services">
+        <div class="stat-icon">
+          <i class="fas fa-concierge-bell"></i>
+        </div>
+        <div class="stat-body">
+          <div class="stat-number">{{ stats.totalServices }}</div>
+          <div class="stat-label">Services</div>
+          <div class="stat-sub">
+            <i class="fas fa-star"></i>
+            {{ stats.totalServices - inactiveServices }} active
+            <span class="stat-sub-sep" *ngIf="inactiveServices > 0">·</span>
+            <span class="draft-hint" *ngIf="inactiveServices > 0">{{ inactiveServices }} inactive</span>
+          </div>
+        </div>
+        <div class="stat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="stat-card teal" routerLink="/admin/images">
+        <div class="stat-icon">
+          <i class="fas fa-images"></i>
+        </div>
+        <div class="stat-body">
+          <div class="stat-number">{{ stats.totalImages }}</div>
+          <div class="stat-label">Gallery Images</div>
+          <div class="stat-sub">
+            <i class="fas fa-photo-video"></i>
+            In the gallery
+          </div>
+        </div>
+        <div class="stat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+    <!-- ── Quick Actions ─────────────────────── -->
+    <div class="quick-actions-section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="quick-actions-grid">
+        <button class="quick-action-btn" routerLink="/admin/blog">
+          <div class="qa-icon blue"><i class="fas fa-pen"></i></div>
+          <span>New Blog Post</span>
+        </button>
+        <button class="quick-action-btn" routerLink="/admin/services">
+          <div class="qa-icon purple"><i class="fas fa-plus-circle"></i></div>
+          <span>Add Service</span>
+        </button>
+        <button class="quick-action-btn" routerLink="/admin/images">
+          <div class="qa-icon teal"><i class="fas fa-upload"></i></div>
+          <span>Upload Image</span>
+        </button>
+        <a class="quick-action-btn" routerLink="/" target="_blank">
+          <div class="qa-icon orange"><i class="fas fa-globe"></i></div>
+          <span>View Live Site</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Progress / Checklist ──────────────── -->
+    <div class="checklist-card" *ngIf="stats.totalBlogPosts === 0 || stats.totalServices === 0 || stats.totalImages === 0">
+      <div class="checklist-header">
+        <i class="fas fa-rocket"></i>
+        <strong>Get Started</strong>
+        <span class="checklist-sub">Complete these steps to set up your hostel page</span>
+      </div>
+      <div class="checklist-steps">
+        <div class="checklist-step" [class.done]="stats.totalBlogPosts > 0">
+          <div class="step-check">
+            <i class="fas" [class.fa-check]="stats.totalBlogPosts > 0" [class.fa-circle]="stats.totalBlogPosts === 0"></i>
+          </div>
+          <div class="step-text">
+            <span>Write your first blog post</span>
+            <small>Share stories and tips about Sinai</small>
+          </div>
+          <a routerLink="/admin/blog" class="step-link" *ngIf="stats.totalBlogPosts === 0">Start <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="checklist-step" [class.done]="stats.totalServices > 0">
+          <div class="step-check">
+            <i class="fas" [class.fa-check]="stats.totalServices > 0" [class.fa-circle]="stats.totalServices === 0"></i>
+          </div>
+          <div class="step-text">
+            <span>Add hostel services</span>
+            <small>Tours, activities, amenities…</small>
+          </div>
+          <a routerLink="/admin/services" class="step-link" *ngIf="stats.totalServices === 0">Start <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="checklist-step" [class.done]="stats.totalImages > 0">
+          <div class="step-check">
+            <i class="fas" [class.fa-check]="stats.totalImages > 0" [class.fa-circle]="stats.totalImages === 0"></i>
+          </div>
+          <div class="step-text">
+            <span>Upload gallery photos</span>
+            <small>Show guests what to expect</small>
+          </div>
+          <a routerLink="/admin/images" class="step-link" *ngIf="stats.totalImages === 0">Start <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Content Row ────────────────────────── -->
+    <div class="content-row">
+
+      <!-- Recent Blog Posts -->
+      <div class="content-card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-feather-alt"></i>
+            Recent Blog Posts
+          </div>
+          <a routerLink="/admin/blog" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="empty-state" *ngIf="recentBlogPosts.length === 0">
+          <i class="fas fa-file-alt"></i>
+          <p>No blog posts yet</p>
+          <a routerLink="/admin/blog" class="empty-cta">Create your first post</a>
+        </div>
+
+        <div class="list-items" *ngIf="recentBlogPosts.length > 0">
+          <div class="list-item" *ngFor="let post of recentBlogPosts">
+            <div class="item-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="item-body">
+              <div class="item-title">{{ post.title }}</div>
+              <div class="item-meta">
+                <span class="badge" [class.badge-green]="post.isPublished" [class.badge-amber]="!post.isPublished">
+                  {{ post.isPublished ? 'Published' : 'Draft' }}
+                </span>
+                <span class="meta-date">
+                  <i class="fas fa-clock"></i>
+                  {{ post.publishedAt | date:'MMM d, y' }}
+                </span>
+              </div>
+            </div>
+            <a routerLink="/admin/blog" class="item-action" title="Edit">
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Services -->
+      <div class="content-card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fas fa-concierge-bell"></i>
+            Recent Services
+          </div>
+          <a routerLink="/admin/services" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="empty-state" *ngIf="recentServices.length === 0">
+          <i class="fas fa-concierge-bell"></i>
+          <p>No services added yet</p>
+          <a routerLink="/admin/services" class="empty-cta">Add a service</a>
+        </div>
+
+        <div class="list-items" *ngIf="recentServices.length > 0">
+          <div class="list-item" *ngFor="let service of recentServices">
+            <div class="item-icon purple">
+              <i class="fas fa-concierge-bell"></i>
+            </div>
+            <div class="item-body">
+              <div class="item-title">{{ service.title }}</div>
+              <div class="item-meta">
+                <span class="badge" [class.badge-green]="service.isActive" [class.badge-red]="!service.isActive">
+                  {{ service.isActive ? 'Active' : 'Inactive' }}
+                </span>
+                <span class="meta-category">
+                  <i class="fas fa-tag"></i>
+                  {{ service.category }}
+                </span>
+              </div>
+            </div>
+            <a routerLink="/admin/services" class="item-action" title="Edit">
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+</div>

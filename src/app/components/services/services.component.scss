@@ -1,0 +1,180 @@
+.page-wrapper {
+  background: var(--warm-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1;
+}
+
+/* Page Hero Shared Style */
+.page-hero {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+
+  @media (max-width: 640px) { height: 300px; }
+  @media (max-width: 400px) { height: 260px; }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15,31,61,0.8) 0%, rgba(28,28,46,0.6) 100%);
+    z-index: 2;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    color: white;
+    padding-top: var(--spacing-16);
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-black);
+    margin-bottom: var(--spacing-2);
+    @media (max-width: 480px) { font-size: var(--text-3xl); }
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+  .page-sub {
+    font-size: var(--text-lg);
+    color: var(--amber);
+    @media (max-width: 480px) { font-size: var(--text-base); }
+    [dir="rtl"] & { font-family: var(--font-arabic); font-size: var(--text-base); }
+  }
+}
+
+/* States */
+.state-container {
+  text-align: center;
+  padding: var(--spacing-16) 0;
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  
+  i {
+    font-size: 2rem;
+    color: var(--amber);
+    margin-bottom: var(--spacing-4);
+  }
+  
+  [dir="rtl"] & { font-family: var(--font-arabic); }
+}
+
+/* Rooms Section */
+.rooms-section {
+  padding: var(--spacing-20) 0;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-8);
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.room-card {
+  background: white;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(212,169,106,0.1);
+  transition: var(--transition-base);
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .room-img {
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+  }
+
+  &:hover .room-img img { transform: scale(1.05); }
+
+  .room-body {
+    padding: var(--spacing-6) var(--spacing-8);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .room-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--midnight);
+    margin-bottom: var(--spacing-3);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+
+  .room-desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    flex: 1;
+    margin-bottom: var(--spacing-6);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+  }
+
+  .room-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: center;
+  }
+
+  .room-price {
+    font-family: var(--font-display);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--spacing-1);
+    color: var(--amber);
+    
+    [dir="rtl"] & { font-family: var(--font-arabic); }
+
+    .price-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .price-value {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-black);
+    }
+    .price-duration {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  }
+
+  .btn { width: 100%; justify-content: center; }
+}

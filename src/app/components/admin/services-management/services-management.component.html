@@ -1,0 +1,214 @@
+<div class="services-management">
+  <div class="page-header">
+    <h1>Services Management</h1>
+    <button class="btn btn-primary" (click)="toggleForm()">
+      <i class="fas fa-plus"></i>
+      {{ showForm ? 'Cancel' : 'Add New Service' }}
+    </button>
+  </div>
+
+  <!-- Service Form -->
+  <div class="service-form-container" *ngIf="showForm">
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form">
+      <div class="form-header">
+        <h2>{{ isEditing ? 'Edit Service' : 'Create New Service' }}</h2>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Service Title *</label>
+          <input type="text" id="title" formControlName="title" class="form-input" placeholder="Enter service title">
+          <div class="error-message" *ngIf="serviceForm.get('title')?.invalid && serviceForm.get('title')?.touched">
+            <span *ngIf="serviceForm.get('title')?.errors?.['required']">Title is required</span>
+            <span *ngIf="serviceForm.get('title')?.errors?.['minlength']">Title must be at least 3 characters</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category *</label>
+          <select id="category" formControlName="category" class="form-select">
+            <option *ngFor="let category of serviceCategories" [value]="category">
+              {{ getCategoryDisplayName(category) }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="serviceForm.get('category')?.invalid && serviceForm.get('category')?.touched">
+            Category is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="shortDescription">Short Description *</label>
+        <textarea id="shortDescription" formControlName="shortDescription" class="form-textarea" rows="2" placeholder="Brief description for cards and previews"></textarea>
+        <div class="error-message" *ngIf="serviceForm.get('shortDescription')?.invalid && serviceForm.get('shortDescription')?.touched">
+          <span *ngIf="serviceForm.get('shortDescription')?.errors?.['required']">Short description is required</span>
+          <span *ngIf="serviceForm.get('shortDescription')?.errors?.['minlength']">Description must be at least 10 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Full Description *</label>
+        <textarea id="description" formControlName="description" class="form-textarea" rows="4" placeholder="Detailed description of the service"></textarea>
+        <div class="error-message" *ngIf="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched">
+          <span *ngIf="serviceForm.get('description')?.errors?.['required']">Description is required</span>
+          <span *ngIf="serviceForm.get('description')?.errors?.['minlength']">Description must be at least 20 characters</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" formControlName="price" class="form-input" placeholder="Enter price" min="0" step="0.01">
+        </div>
+
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <select id="currency" formControlName="currency" class="form-select">
+            <option value="EGP">EGP (Egyptian Pound)</option>
+            <option value="USD">USD (US Dollar)</option>
+            <option value="EUR">EUR (Euro)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Duration</label>
+          <input type="text" id="duration" formControlName="duration" class="form-input" placeholder="e.g., 2 hours, 1 day">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="icon">Icon Class</label>
+          <input type="text" id="icon" formControlName="icon" class="form-input" placeholder="FontAwesome icon class (e.g., fa-diving)">
+          <small class="form-help">Enter FontAwesome icon class without 'fa-' prefix</small>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isActive" class="form-checkbox">
+            <span class="checkmark"></span>
+            Active Service
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="features">Features</label>
+        <textarea id="features" formControlName="features" class="form-textarea" rows="3" placeholder="Enter features separated by commas"></textarea>
+        <small class="form-help">Separate multiple features with commas (e.g., Equipment included, Professional guide, Insurance)</small>
+      </div>
+
+      <!-- Image Upload Section -->
+      <div class="form-group">
+        <label>Service Image</label>
+        <div class="image-upload-section">
+          <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Preview" class="preview-image">
+            <button type="button" class="remove-image" (click)="imagePreview = null; selectedImage = null">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <div class="image-upload-controls" *ngIf="!imagePreview">
+            <input type="file" id="imageInput" (change)="onImageSelected($event)" accept="image/*" class="file-input">
+            <label for="imageInput" class="file-input-label">
+              <i class="fas fa-upload"></i>
+              Choose Image
+            </label>
+          </div>
+          
+          <button type="button" class="btn btn-secondary" (click)="uploadImage()" *ngIf="selectedImage && !imagePreview">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Upload Image
+          </button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" (click)="resetForm()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid || isLoading">
+          <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+          {{ isEditing ? 'Update Service' : 'Create Service' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Services List -->
+  <div class="services-section">
+    <div class="section-header">
+      <h2>All Services</h2>
+      <div class="services-count">{{ services.length }} services</div>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading services...</p>
+    </div>
+
+    <div class="services-grid" *ngIf="!isLoading && services.length > 0">
+      <div class="service-card" *ngFor="let service of services">
+        <div class="service-image" *ngIf="service.image">
+          <img [src]="service.image" [alt]="service.title">
+        </div>
+        
+        <div class="service-content">
+          <div class="service-header">
+            <h3 class="service-title">{{ service.title }}</h3>
+            <div class="service-status">
+              <span class="status-badge" [class.active]="service.isActive" [class.inactive]="!service.isActive">
+                {{ service.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+          </div>
+          
+          <p class="service-short-description">{{ service.shortDescription }}</p>
+          
+          <div class="service-meta">
+            <div class="meta-item">
+              <i class="fas fa-tag"></i>
+              <span>{{ getCategoryDisplayName(service.category) }}</span>
+            </div>
+            <div class="meta-item" *ngIf="service.price">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>{{ service.currency }} {{ service.price }}</span>
+            </div>
+            <div class="meta-item" *ngIf="service.duration">
+              <i class="fas fa-clock"></i>
+              <span>{{ service.duration }}</span>
+            </div>
+          </div>
+          
+          <div class="service-features" *ngIf="service.features.length > 0">
+            <h4>Features:</h4>
+            <ul>
+              <li *ngFor="let feature of service.features">{{ feature }}</li>
+            </ul>
+          </div>
+          
+          <div class="service-actions">
+            <button class="btn btn-sm btn-outline" (click)="editService(service)">
+              <i class="fas fa-edit"></i>
+              Edit
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteService(service.id!)">
+              <i class="fas fa-trash"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && services.length === 0">
+      <i class="fas fa-concierge-bell"></i>
+      <h3>No services yet</h3>
+      <p>Create your first service to get started.</p>
+      <button class="btn btn-primary" (click)="toggleForm()">
+        <i class="fas fa-plus"></i>
+        Create First Service
+      </button>
+    </div>
+  </div>
+</div>
+

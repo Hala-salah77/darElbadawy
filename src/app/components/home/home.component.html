@@ -1,0 +1,653 @@
+<div class="home-page">
+  <app-header></app-header>
+
+  <main class="main-content">
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 1 — HERO: "القصة تبدأ هنا"
+    ═══════════════════════════════════════════════════ -->
+    <section class="hero-section" id="home" aria-label="Hero">
+      <!-- Ken-Burns Slideshow Background -->
+      <div class="hero-slides">
+        <div *ngFor="let slide of heroSlides; let i = index" class="hero-slide" [class.active]="i === currentSlide"
+          [style.background-image]="'url(' + slide + ')'">
+        </div>
+      </div>
+
+      <!-- Multi-layer overlay -->
+      <div class="hero-overlay"></div>
+      <div class="hero-grain"></div>
+
+      <!-- Hero Content -->
+      <div class="hero-content">
+        <div class="container">
+          <div class="hero-inner">
+
+            <!-- Badge -->
+            <div class="hero-badge" data-reveal>
+              <span class="badge-dot"></span>
+              <span>{{ t('heroBadge') }}</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="hero-title" data-reveal>
+              <span class="title-first">{{ t('heroTitleEn') }}</span>
+              <span class="title-second">
+                {{ t('heroTitleAr') }}
+                <span class="rotating-word">
+                  <span *ngFor="let word of (lang === 'ar' ? heroWords : heroWordsEn); let i = index" class="word"
+                    [class.active]="i === currentWord">
+                    {{ word }}
+                  </span>
+                </span>
+                {{ t('heroTitleEnd') }}
+              </span>
+            </h1>
+
+            <!-- Sub -->
+            <p class="hero-sub" data-reveal>
+              {{ t('heroSub') }}
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="hero-ctas" data-reveal>
+              <a href="#events" class="btn btn-amber btn-xl btn-pulse" id="hero-events-cta">
+                <i class="fas fa-calendar-alt"></i>
+                {{ t('heroCtaEvents') }}
+              </a>
+              <a href="https://wa.me/201234567890" target="_blank" class="btn btn-outline-white btn-xl">
+                <i class="fab fa-whatsapp"></i>
+                {{ t('heroCtaBook') }}
+              </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="hero-stats" data-reveal>
+              <div class="stat">
+                <div class="stat-num">500<span>+</span></div>
+                <div class="stat-label">{{ t('statSouls') }}</div>
+              </div>
+              <div class="stat-sep"></div>
+              <div class="stat">
+                <div class="stat-num">50<span>+</span></div>
+                <div class="stat-label">{{ t('statAdventures') }}</div>
+              </div>
+              <div class="stat-sep"></div>
+              <div class="stat">
+                <div class="stat-num">4.9<span>★</span></div>
+                <div class="stat-label">{{ t('statRating') }}</div>
+              </div>
+              <div class="stat-sep"></div>
+              <div class="stat">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">{{ t('statStories') }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide Dots -->
+      <div class="slide-dots">
+        <button *ngFor="let slide of heroSlides; let i = index" class="dot" [class.active]="i === currentSlide"
+          (click)="goToSlide(i)" [attr.aria-label]="'Go to slide ' + (i+1)">
+        </button>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="hero-scroll">
+        <div class="scroll-arrow">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <span>{{ t('scroll') }}</span>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 2 — EVENTS: "إيه الجديد في الدار؟"
+    ═══════════════════════════════════════════════════ -->
+    <section class="events-section section" id="events">
+      <div class="container">
+
+        <div class="section-header" data-reveal>
+          <span class="section-label">{{ t('eventsLabel') }}</span>
+          <h2 class="section-title">{{ t('eventsTitle') }}</h2>
+          <p class="section-sub">{{ t('eventsSub') }}</p>
+        </div>
+
+        <div class="events-grid">
+          <article *ngFor="let event of events; let i = index" class="event-card" data-reveal
+            [class]="'delay-' + (i+1)">
+
+            <div class="event-emoji">{{ event.icon }}</div>
+
+            <div class="event-tag" [style.background]="event.color + '20'" [style.color]="event.color">
+              {{ lang === 'en' ? event.tag : event.tagAr }}
+            </div>
+
+            <h3 class="event-title">{{ lang === 'en' ? event.titleEn : event.titleAr }}</h3>
+
+            <p class="event-desc">{{ lang === 'en' ? event.descEn : event.descAr }}</p>
+
+            <!-- Countdown Timer -->
+            <div class="countdown" *ngIf="countdowns[event.id]">
+              <div class="countdown-title">
+                <i class="fas fa-clock"></i>
+                {{ t('countdownTitle') }}
+              </div>
+              <div class="countdown-grid">
+                <div class="countdown-unit">
+                  <div class="countdown-num">{{ pad(countdowns[event.id].days) }}</div>
+                  <div class="countdown-label">{{ t('days') }}</div>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit">
+                  <div class="countdown-num">{{ pad(countdowns[event.id].hours) }}</div>
+                  <div class="countdown-label">{{ t('hrs') }}</div>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit">
+                  <div class="countdown-num">{{ pad(countdowns[event.id].minutes) }}</div>
+                  <div class="countdown-label">{{ t('min') }}</div>
+                </div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit">
+                  <div class="countdown-num">{{ pad(countdowns[event.id].seconds) }}</div>
+                  <div class="countdown-label">{{ t('sec') }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-date">
+              <i class="fas fa-calendar-alt"></i>
+              {{ event.date | date:'EEEE, MMMM d · h:mm a' }}
+            </div>
+
+            <a href="https://wa.me/201234567890?text=I'm interested in: {{ event.titleEn }}" target="_blank"
+              class="btn btn-amber event-btn">
+              <i class="fab fa-whatsapp"></i>
+              {{ t('reserveSpot') }}
+            </a>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 2.5 — WEEKLY SCHEDULE
+    ═══════════════════════════════════════════════════ -->
+    <section class="schedule-section section" id="weekly-schedule">
+      <div class="schedule-bg">
+        <div class="container-fluid">
+          <div class="section-header center" data-reveal>
+            <span class="section-label light">{{ t('scheduleLabel') }}</span>
+            <h2 class="section-title text-white">{{ t('scheduleTitle') }}</h2>
+            <p class="section-sub text-white-50">{{ t('scheduleSub') }}</p>
+          </div>
+
+          <div class="schedule-grid" data-reveal>
+            <!-- Columns -->
+            <div class="schedule-col" *ngFor="let day of weeklySchedule">
+              <!-- Day Header -->
+              <div class="day-header">
+                <h3>{{ lang === 'en' ? day.dayEn : day.dayAr }}</h3>
+              </div>
+
+              <!-- Time Block: Daylight -->
+              <div class="time-block">
+                <div class="time-label-wrapper">
+                  <div class="time-label" *ngIf="day === weeklySchedule[0]">{{ t('daylightTitle') }}</div>
+                </div>
+                <div class="event-pill" *ngFor="let item of day.daylight">
+                  <span class="e-time" *ngIf="item.time">{{ lang === 'en' ? item.time : item.timeAr }}</span>
+                  <span class="e-title">{{ lang === 'en' ? item.title : item.titleAr }}</span>
+                  <span class="e-sub" *ngIf="item.subtitle">{{ lang === 'en' ? item.subtitle : item.subtitleAr }}</span>
+                </div>
+              </div>
+
+              <!-- Time Block: Midday -->
+              <div class="time-block">
+                <div class="time-label-wrapper">
+                  <div class="time-label" *ngIf="day === weeklySchedule[0]">{{ t('middayTitle') }}</div>
+                </div>
+                <div class="event-pill" *ngFor="let item of day.midday">
+                  <span class="e-time" *ngIf="item.time">{{ lang === 'en' ? item.time : item.timeAr }}</span>
+                  <span class="e-title">{{ lang === 'en' ? item.title : item.titleAr }}</span>
+                  <span class="e-sub" *ngIf="item.subtitle">{{ lang === 'en' ? item.subtitle : item.subtitleAr }}</span>
+                </div>
+              </div>
+
+              <!-- Time Block: Nightlife -->
+              <div class="time-block">
+                <div class="time-label-wrapper">
+                  <div class="time-label" *ngIf="day === weeklySchedule[0]">{{ t('nightlifeTitle') }}</div>
+                </div>
+                <div class="event-pill" *ngFor="let item of day.nightlife">
+                  <span class="e-time" *ngIf="item.time">{{ lang === 'en' ? item.time : item.timeAr }}</span>
+                  <span class="e-title">{{ lang === 'en' ? item.title : item.titleAr }}</span>
+                  <span class="e-sub" *ngIf="item.subtitle">{{ lang === 'en' ? item.subtitle : item.subtitleAr }}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="schedule-footer text-center" data-reveal>
+            <p class="sf-title">UPCOMING TRIPS AND EVENTS</p>
+            <p class="sf-sub">PLANNING TO JOIN US !? LET US KNOW A DAY AHEAD SO WE ARE READY FOR IT!</p>
+            <p class="sf-bold">FOOD & DRINKS ARE AVAILABLE</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 2.8 — PAST & UPCOMING EXPEDITIONS
+    ═══════════════════════════════════════════════════ -->
+    <section class="detailed-events-section section" id="expeditions">
+      <div class="container">
+        <div class="section-header" data-reveal>
+          <span class="section-label">{{ t('detailedLabel') }}</span>
+          <h2 class="section-title">{{ t('detailedTitle') }}</h2>
+          <p class="section-sub">{{ t('detailedSub') }}</p>
+        </div>
+
+        <div class="carousel-container" data-reveal>
+          <div class="events-carousel">
+            <article class="expedition-card" *ngFor="let pEvent of pastEvents; let i = index">
+              <!-- Image Placeholder -->
+              <div class="card-image-wrapper">
+                <img [src]="pEvent.imageUrl || 'assets/images/cover.jpg'"
+                  [alt]="lang === 'en' ? pEvent.title : pEvent.titleAr">
+                <div class="card-overlay"></div>
+                <div class="edition-badge">{{ lang === 'en' ? pEvent.edition : pEvent.editionAr }}</div>
+              </div>
+
+              <div class="card-content">
+                <h3 class="event-title">{{ lang === 'en' ? pEvent.title : pEvent.titleAr }}</h3>
+                <p class="event-slogan">{{ lang === 'en' ? pEvent.slogan : pEvent.sloganAr }}</p>
+
+                <ul class="activities-list">
+                  <li *ngFor="let act of (lang === 'en' ? pEvent.activities : pEvent.activitiesAr)">
+                    <i class="fas fa-check"></i> {{ act }}
+                  </li>
+                </ul>
+
+                <div class="event-meta">
+                  <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>{{ lang === 'en' ? pEvent.date : pEvent.dateAr }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="far fa-clock"></i>
+                    <span>{{ lang === 'en' ? pEvent.startTime : pEvent.startTimeAr }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ lang === 'en' ? pEvent.venue : pEvent.venueAr }}</span>
+                  </div>
+                </div>
+
+                <!-- Price Reveal -->
+                <div class="price-reveal-zone">
+                  <span class="reveal-text">{{ t('priceReveal') }}</span>
+                  <div class="price-content">
+                    <p class="pc-title">{{ lang === 'en' ? 'Price / Contribution' : 'التكلفة / المشاركة' }}</p>
+                    <p class="pc-value">{{ lang === 'en' ? pEvent.contribution : pEvent.contributionAr }}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 3 — INSTAGRAM VIDEO
+    ═══════════════════════════════════════════════════ -->
+    <section class="video-section section" id="our-world">
+      <div class="container">
+        <div class="video-layout">
+
+          <div class="video-text" data-reveal="left">
+            <span class="section-label">{{ t('videoLabel') }}</span>
+            <h2 class="section-title">{{ t('videoTitle') }}</h2>
+            <p>{{ t('videoDesc') }}</p>
+            <div class="video-cta-group">
+              <a href="https://www.instagram.com/bedouin.dar/" target="_blank" class="btn btn-midnight">
+                <i class="fab fa-instagram"></i>
+                {{ t('followUs') }}
+              </a>
+              <a href="https://wa.me/201234567890" target="_blank" class="btn btn-outline-amber">
+                <i class="fab fa-whatsapp"></i>
+                {{ t('planTrip') }}
+              </a>
+            </div>
+          </div>
+
+          <div class="video-embed-wrap" data-reveal="right">
+            <div class="instagram-frame">
+              <div [innerHTML]="instagramEmbed | safeHtml"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 4 — HISTORY & VOLUNTEERING (Asymmetric)
+    ═══════════════════════════════════════════════════ -->
+    <section class="story-section" id="story">
+      <div class="story-grid">
+
+        <!-- Left: Sinai History -->
+        <div class="story-half story-history">
+          <div class="story-half-inner" data-reveal="left">
+            <span class="section-label light">{{ t('historyLabel') }}</span>
+            <h2 class="story-title">{{ t('historyTitle') }}</h2>
+            <p class="story-text">{{ t('historyText') }}</p>
+            <div class="story-facts">
+              <div class="fact" *ngFor="let fact of [
+                {icon:'🕌', en:'Ancient Monastery', ar:'دير القديسة كاترين'},
+                {icon:'⛰️', en:'Mount Sinai (2285m)', ar:'جبل موسى (٢٢٨٥م)'},
+                {icon:'🐪', en:'Living Bedouin Culture', ar:'التراث البدوي الحي'}
+              ]">
+                <span class="fact-icon">{{ fact.icon }}</span>
+                <span class="fact-text">{{ lang === 'en' ? fact.en : fact.ar }}</span>
+              </div>
+            </div>
+            <a routerLink="/blog" class="btn btn-outline-white">
+              <i class="fas fa-book-open"></i>
+              {{ t('readStories') }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Volunteering -->
+        <div class="story-half story-volunteer">
+          <div class="story-half-inner" data-reveal="right">
+            <span class="section-label" style="color: var(--amber)">{{ t('volLabel') }}</span>
+            <h2 class="story-title dark">{{ t('volTitle') }}</h2>
+            <p class="story-text dark">{{ t('volText') }}</p>
+
+            <div class="volunteer-cards">
+              <div class="vol-card" *ngFor="let vol of [
+                {icon:'🌴', en:'Plant & Restore', ar:'ازرع واعمر'},
+                {icon:'📚', en:'Teach & Share', ar:'علّم وشارك'},
+                {icon:'🏕️', en:'Build & Create', ar:'ابنِ وابتكر'}
+              ]">
+                <span>{{ vol.icon }}</span>
+                <strong>{{ lang === 'en' ? vol.en : vol.ar }}</strong>
+              </div>
+            </div>
+
+            <a href="https://wa.me/201234567890?text=I'd love to volunteer at Dar El-Badawi!" target="_blank"
+              class="btn btn-amber btn-pulse volunteer-cta">
+              <i class="fas fa-heart"></i>
+              {{ t('volJoin') }}
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 5 — ACCOMMODATION
+    ═══════════════════════════════════════════════════ -->
+    <section class="rooms-section section" id="stay">
+      <div class="container">
+
+        <div class="section-header" data-reveal>
+          <span class="section-label">{{ t('stayLabel') }}</span>
+          <h2 class="section-title">{{ t('stayTitle') }}</h2>
+          <p class="section-sub">{{ t('staySub') }}</p>
+        </div>
+
+        <div class="rooms-grid">
+          <div class="room-card" *ngFor="let room of [
+            {icon:'🛏️', en:'Dorm Bed', ar:'سرير دورمتوري', descEn:'Meet new people from around the world in our cosy shared dorms.', descAr:'قابل ناس جديدة من كل حتة في الدورمتوري المريح.', price:'from $12'},
+            {icon:'🏠', en:'Private Room', ar:'أوضة خاصة', descEn:'Your own space with a desert view. Simple, clean, and comfortable.', descAr:'مساحتك الخاصة بإطلالة صحراوية. بسيطة، نضيفة، ومريحة فعلاً.', price:'from $35'},
+            {icon:'🔥', en:'Rooftop Tent', ar:'خيمة السطح', descEn:'Sleep under a billion stars with the mountain silhouette at dusk.', descAr:'نام تحت مليار نجمة مع ظل الجبل وقت الغروب.', price:'from $18'}
+          ]" data-reveal>
+            <div class="room-icon">{{ room.icon }}</div>
+            <h3 class="room-title">{{ lang === 'en' ? room.en : room.ar }}</h3>
+            <p class="room-desc">{{ lang === 'en' ? room.descEn : room.descAr }}</p>
+            <div class="room-price">{{ room.price }}</div>
+            <a href="https://wa.me/201234567890?text=I'd like to book: {{ room.en }}" target="_blank"
+              class="btn btn-outline-amber">
+              <i class="fab fa-whatsapp"></i>
+              {{ t('book') }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="amenities" data-reveal>
+          <div class="amenities-title">{{ t('amenitiesTitle') }}</div>
+          <div class="amenities-grid">
+            <div class="amenity" *ngFor="let a of [
+              {icon:'📶', en:'Fast WiFi', ar:'واي فاي سريع'},
+              {icon:'☕', en:'Free Coffee', ar:'قهوة مجانية'},
+              {icon:'🔥', en:'BBQ Nights', ar:'ليالي شوي'},
+              {icon:'🏊', en:'Beach 2 min', ar:'الشاطئ ٢ دقيقة'},
+              {icon:'🎒', en:'Gear Rental', ar:'إيجار معدات'},
+              {icon:'🗺️', en:'Free Maps', ar:'خرايط مجانية'},
+              {icon:'🚿', en:'Hot Showers', ar:'دش ساخن'},
+              {icon:'🔒', en:'Safe Lockers', ar:'خزنة آمنة'}
+            ]">
+              <span class="amenity-icon">{{ a.icon }}</span>
+              <span>{{ lang === 'en' ? a.en : a.ar }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 6 — INTERACTIVE MAP
+    ═══════════════════════════════════════════════════ -->
+    <section class="map-section section" id="map">
+      <div class="container">
+
+        <div class="section-header" data-reveal>
+          <span class="section-label">{{ t('mapLabel') }}</span>
+          <h2 class="section-title">{{ t('mapTitle') }}</h2>
+          <p class="section-sub">{{ t('mapSub') }}</p>
+        </div>
+
+        <div class="sinai-map" data-reveal>
+          <!-- Map Background -->
+          <div class="map-bg">
+            <div class="map-label-main">
+              <span class="map-mountains">⛰️⛰️⛰️</span>
+              <span class="map-title-text">South Sinai</span>
+              <span class="map-subtitle-text">جنوب سيناء</span>
+            </div>
+            <div class="map-sea-label">🌊 Red Sea · خليج العقبة</div>
+          </div>
+
+          <!-- Spots -->
+          <div *ngFor="let spot of secretSpots; let i = index" class="map-spot" [style.left]="spot.left"
+            [style.top]="spot.top" (mouseenter)="setActiveSpot(spot)" (mouseleave)="setActiveSpot(null)"
+            (touchstart)="setActiveSpot(spot)" [class.active]="activeSpot === spot">
+
+            <div class="spot-pin">
+              <span class="spot-emoji">{{ spot.emoji }}</span>
+              <div class="spot-ring"></div>
+            </div>
+
+            <div class="spot-tooltip" *ngIf="activeSpot === spot">
+              <div class="tooltip-emoji">{{ spot.emoji }}</div>
+              <div class="tooltip-name">{{ lang === 'en' ? spot.name : spot.nameAr }}</div>
+              <div class="tooltip-desc">{{ lang === 'en' ? spot.desc : spot.descAr }}</div>
+            </div>
+          </div>
+
+          <!-- Map Legend -->
+          <div class="map-legend">
+            <div class="legend-title">
+              <i class="fas fa-map-marked-alt"></i>
+              {{ t('mapLegend') }}
+            </div>
+            <p>{{ t('mapLegendSub') }}</p>
+          </div>
+        </div>
+
+        <div class="map-cta" data-reveal>
+          <a href="https://www.google.com/maps/place/Bedouin+Hostel/" target="_blank" class="btn btn-midnight">
+            <i class="fas fa-map-marker-alt"></i>
+            {{ t('findOnMap') }}
+          </a>
+          <a href="https://wa.me/201234567890?text=Can you show me around?" target="_blank"
+            class="btn btn-outline-amber">
+            <i class="fab fa-whatsapp"></i>
+            {{ t('insideGuide') }}
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 7 — PLAYLIST
+    ═══════════════════════════════════════════════════ -->
+    <section class="playlist-section" id="playlist">
+      <div class="playlist-bg">
+        <div class="container">
+          <div class="playlist-layout">
+
+            <div class="playlist-text" data-reveal="left">
+              <span class="section-label" style="color: var(--amber-light)">{{ t('playlistLabel') }}</span>
+              <h2 class="playlist-title">{{ t('playlistTitle') }}</h2>
+              <p class="playlist-sub">{{ t('playlistSub') }}</p>
+              <div class="playlist-vibes">
+                <span class="vibe-tag"
+                  *ngFor="let v of ['Bedouin Folk', 'Desert Blues', 'Arabic Jazz', 'Oud & Soul', 'Sinai Sunrise']">{{ v
+                  }}</span>
+              </div>
+            </div>
+
+            <div class="playlist-embed" data-reveal="right">
+              <div class="spotify-card">
+                <div class="spotify-header">
+                  <i class="fab fa-spotify"></i>
+                  <span>{{ t('playlistTitle') }}</span>
+                </div>
+                <iframe data-testid="embed-iframe" style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/6kFHnC9UGXl6gwXBX61x7B?utm_source=generator" width="100%"
+                  height="352" frameBorder="0" allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"></iframe>
+
+                <!-- <iframe data-testid="embed-iframe" style="border-radius:12px"
+                  src="https://open.spotify.com/embed/track/30B8K8w9HXWuFkCkdPYMR0?utm_source=generator&theme=0"
+                  width="100%" height="352" frameBorder="0" allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"></iframe> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 8 — BLOG
+    ═══════════════════════════════════════════════════ -->
+    <section class="blog-section section" id="stories">
+      <div class="container">
+
+        <div class="section-header" data-reveal>
+          <span class="section-label">{{ t('blogLabel') }}</span>
+          <h2 class="section-title">{{ t('blogTitle') }}</h2>
+        </div>
+
+        <div class="blog-grid">
+          <article class="blog-card" *ngFor="let post of featuredBlogPosts; let i = index" data-reveal
+            [class]="'delay-' + (i+1)">
+            <div class="blog-img" *ngIf="post.featuredImage">
+              <img [src]="post.featuredImage" [alt]="post.title" loading="lazy">
+              <div class="blog-img-overlay"></div>
+            </div>
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-calendar"></i>{{ post.publishedAt | date:'MMM d, y' }}</span>
+                <span><i class="fas fa-user"></i>{{ post.author }}</span>
+              </div>
+              <h3 class="blog-title"><a [routerLink]="['/blog', post.id]">{{ post.title }}</a></h3>
+              <p class="blog-excerpt">{{ post.excerpt }}</p>
+              <a [routerLink]="['/blog', post.id]" class="blog-read-more">
+                {{ t('readStory') }} <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-cta" data-reveal>
+          <a routerLink="/blog" class="btn btn-midnight btn-lg">
+            <i class="fas fa-book-open"></i>
+            {{ t('allStories') }}
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         SECTION 9 — FINAL CTA
+    ═══════════════════════════════════════════════════ -->
+    <section class="final-cta-section" id="book">
+      <div class="final-cta-bg">
+        <div class="container">
+          <div class="final-cta-inner" data-reveal>
+            <h2 class="final-title">
+              {{ t('ctaTitle') }}<br>
+              <span class="amber-word">{{ t('ctaTitleWord') }}</span>
+            </h2>
+            <p class="final-sub">{{ t('ctaSub') }}</p>
+            <div class="final-buttons">
+              <a href="https://wa.me/201234567890?text=I want to book at Dar El-Badawi!" target="_blank"
+                class="btn btn-amber btn-xl btn-pulse" id="final-book-btn">
+                <i class="fab fa-whatsapp"></i>
+                {{ t('ctaBook') }}
+              </a>
+              <a routerLink="/contact" class="btn btn-outline-white btn-xl">
+                <i class="fas fa-envelope"></i>
+                {{ t('ctaMessage') }}
+              </a>
+            </div>
+            <div class="final-social">
+              <a href="https://www.instagram.com/bedouin.dar/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://www.youtube.com/@AFIFYWASHERE" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a href="https://wa.me/201234567890" target="_blank" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <app-footer></app-footer>
+</div>

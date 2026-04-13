@@ -1,0 +1,55 @@
+<div class="page-wrapper">
+  <app-header></app-header>
+  
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <div class="hero-bg" style="background-image: url('assets/images/cover.jpg');"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="page-title">{{ t('heroTitle') }}</h1>
+        <p class="page-sub">{{ t('heroSub') }}</p>
+      </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="blog-section section">
+      <div class="container">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>{{ t('loading') }}</p>
+        </div>
+
+        <div *ngIf="!isLoading && blogPosts.length === 0" class="empty-state">
+          <p>{{ t('noPosts') }}</p>
+        </div>
+
+        <div class="blog-grid" *ngIf="!isLoading && blogPosts.length > 0">
+          <article class="blog-card" *ngFor="let post of blogPosts">
+            <div class="blog-img" *ngIf="post.featuredImage">
+              <img [src]="post.featuredImage" [alt]="post.title" loading="lazy">
+              <div class="blog-img-overlay"></div>
+            </div>
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-calendar"></i>{{ post.publishedAt | date:'MMM d, y' }}</span>
+                <span><i class="fas fa-user"></i>{{ post.author }}</span>
+              </div>
+              <h3 class="blog-title">
+                <a [routerLink]="['/blog', post.id]">{{ post.title }}</a>
+              </h3>
+              <p class="blog-excerpt">{{ post.excerpt }}</p>
+              <a [routerLink]="['/blog', post.id]" class="blog-read-more">
+                {{ t('readStory') }} <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  
+  <app-footer></app-footer>
+</div>

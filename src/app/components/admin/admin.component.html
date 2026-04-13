@@ -1,0 +1,107 @@
+<div class="admin-layout" [class.sidebar-collapsed]="sidebarCollapsed" dir="ltr" style="font-family: 'Inter', sans-serif;">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <i class="fas fa-mountain"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">Dar El-Badawy</span>
+        <span class="brand-role">Admin Panel</span>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="nav-section-label">Main Menu</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link" [title]="sidebarCollapsed ? 'Dashboard' : ''">
+            <div class="nav-icon">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/blog" routerLinkActive="active" class="nav-link" [title]="sidebarCollapsed ? 'Blog Management' : ''">
+            <div class="nav-icon">
+              <i class="fas fa-feather-alt"></i>
+            </div>
+            <span class="nav-label">Blog Posts</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/services" routerLinkActive="active" class="nav-link" [title]="sidebarCollapsed ? 'Services' : ''">
+            <div class="nav-icon">
+              <i class="fas fa-concierge-bell"></i>
+            </div>
+            <span class="nav-label">Services</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/images" routerLinkActive="active" class="nav-link" [title]="sidebarCollapsed ? 'Gallery' : ''">
+            <div class="nav-icon">
+              <i class="fas fa-images"></i>
+            </div>
+            <span class="nav-label">Gallery</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">Quick Links</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a routerLink="/" target="_blank" class="nav-link" [title]="sidebarCollapsed ? 'View Site' : ''">
+            <div class="nav-icon">
+              <i class="fas fa-external-link-alt"></i>
+            </div>
+            <span class="nav-label">View Site</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info" *ngIf="!sidebarCollapsed">
+          <span class="user-name">{{ user?.displayName || 'Admin' }}</span>
+          <span class="user-email">{{ user?.email }}</span>
+        </div>
+      </div>
+      <button (click)="logout()" class="logout-btn" [title]="sidebarCollapsed ? 'Logout' : ''">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!sidebarCollapsed">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="admin-main">
+    <!-- Top bar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="fas" [class.fa-bars]="sidebarCollapsed" [class.fa-times]="!sidebarCollapsed && isMobile" [class.fa-chevron-left]="!sidebarCollapsed && !isMobile"></i>
+        </button>
+      </div>
+      <div class="topbar-right">
+        <a routerLink="/" class="topbar-action" target="_blank">
+          <i class="fas fa-globe"></i>
+          <span>View Site</span>
+        </a>
+        <div class="topbar-user">
+          <i class="fas fa-user-circle"></i>
+          <span>{{ user?.displayName || user?.email }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

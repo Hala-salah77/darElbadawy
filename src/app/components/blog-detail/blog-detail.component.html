@@ -1,0 +1,47 @@
+<div class="page-wrapper">
+  <app-header></app-header>
+  
+  <main class="main-content">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="state-container">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>{{ t('loading') }}</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && !blogPost" class="state-container">
+      <i class="fas fa-exclamation-triangle" style="color: var(--amber);"></i>
+      <p>{{ t('notFound') }}</p>
+      <a routerLink="/blog" class="btn btn-outline-midnight mt-4">{{ t('back') }}</a>
+    </div>
+
+    <article class="post-article" *ngIf="!isLoading && blogPost">
+      <div class="container post-container">
+        
+        <div class="post-nav">
+          <a routerLink="/blog" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            {{ t('back') }}
+          </a>
+        </div>
+
+        <header class="post-header">
+          <h1 class="post-title">{{ blogPost.title }}</h1>
+          <div class="post-meta">
+            <span><i class="fas fa-calendar"></i> {{ blogPost.publishedAt | date:'MMMM d, y' }}</span>
+            <span><i class="fas fa-user"></i> {{ blogPost.author }}</span>
+          </div>
+        </header>
+
+        <div class="post-hero" *ngIf="blogPost.featuredImage">
+          <img [src]="blogPost.featuredImage" [alt]="blogPost.title">
+        </div>
+
+        <div class="post-content" [innerHTML]="blogPost.content"></div>
+        
+      </div>
+    </article>
+  </main>
+  
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,92 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Gallery Management</h1>
+      <p class="page-description">Manage images shown in the gallery section.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAddForm()">
+      <i class="fas fa-plus"></i> Add New Image
+    </button>
+  </div>
+
+  <div class="content-body">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading gallery images...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && galleryItems.length === 0" class="empty-state">
+      <i class="fas fa-images empty-icon"></i>
+      <h3>No images found</h3>
+      <p>Click "Add New Image" to populate your gallery.</p>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div *ngIf="!isLoading && galleryItems.length > 0" class="gallery-grid">
+      <div *ngFor="let item of galleryItems" class="gallery-card">
+        <div class="image-wrapper">
+          <img [src]="item.imgUrl" alt="Gallery Image" class="gallery-img" (error)="item.imgUrl = 'assets/placeholder.jpg'">
+          <div class="card-actions">
+            <button class="btn-icon btn-edit" (click)="openEditForm(item)" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon btn-delete" (click)="deleteImage(item.id)" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="image-info">
+          <h4 *ngIf="item.name" class="img-name-text">{{ item.name }}</h4>
+          <p class="img-url-text" [title]="item.imgUrl">{{ item.imgUrl }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Modal -->
+  <div class="modal-overlay" *ngIf="showForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Edit Image URL' : 'Add New Image URL' }}</h2>
+        <button class="btn-close" (click)="closeForm()"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="imgName">Image Name (Optional)</label>
+          <input 
+            type="text" 
+            id="imgName" 
+            [(ngModel)]="formName" 
+            class="form-control" 
+            placeholder="E.g., Desert Sunset"
+          >
+        </div>
+        <div class="form-group">
+          <label for="imgUrl">Image URL (Direct Link)</label>
+          <input 
+            type="text" 
+            id="imgUrl" 
+            [(ngModel)]="formImgUrl" 
+            class="form-control" 
+            placeholder="https://example.com/image.jpg"
+          >
+          <div class="image-preview" *ngIf="formImgUrl">
+            <p>Preview:</p>
+            <img [src]="formImgUrl" alt="Preview">
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeForm()" [disabled]="isSaving">Cancel</button>
+        <button class="btn btn-primary" (click)="saveImage()" [disabled]="isSaving || !formImgUrl.trim()">
+          <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+          <span *ngIf="!isSaving">Save Image</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
